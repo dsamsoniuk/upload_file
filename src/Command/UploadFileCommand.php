@@ -22,10 +22,26 @@ class UploadFileCommand extends Command
      * @var FileService $fileService
      */
     private $fileService;
+    
+    /**
+     * @var DropBoxService $dropBoxService
+     */
+    private $dropBoxService;
 
-    public function __construct(FileService $fileService)
+    /**
+     * @var ImageOptimizer $imageOptimizer
+     */
+    private $imageOptimizer;
+
+    public function __construct(
+        FileService $fileService, 
+        DropBoxService $dropBoxService,
+        ImageOptimizer $imageOptimizer
+        )
     {
         $this->fileService = $fileService;
+        $this->dropBoxService = $dropBoxService;
+        $this->imageOptimizer = $imageOptimizer;
         parent::__construct();
     }
 
@@ -59,13 +75,10 @@ class UploadFileCommand extends Command
             return Command::FAILURE;
         }
         
-        $file           = $this->fileService->copyFile($path, '/public/image/');
+        $file = $this->fileService->copyFile($path, '/public/image/');
 
-        $optimalizer    = new ImageOptimizer();
-        $optimalizer->resize($file->getPathname());
-
-        $dropBox        = new DropBoxService();
-        $dropBox->uploadFile($file->getFilename(), $file->getContent(), 'image');
+        $this->imageOptimizer->resize($file->getPathname());
+        $this->dropBoxService->uploadFile($file->getFilename(), $file->getContent(), 'image');
 
         $io->note(sprintf('Image uploaded successfully.' ));
 
