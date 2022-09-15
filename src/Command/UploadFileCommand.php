@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[AsCommand(
     name: 'app:upload-file',
@@ -22,7 +23,7 @@ class UploadFileCommand extends Command
      * @var FileService $fileService
      */
     private $fileService;
-    
+
     /**
      * @var DropBoxService $dropBoxService
      */
@@ -74,8 +75,9 @@ class UploadFileCommand extends Command
             $io->warning(sprintf('File not exists.' ));
             return Command::FAILURE;
         }
-        
-        $file = $this->fileService->copyFile($path, '/public/image/');
+
+        $file = new File($path);
+        $file = $this->fileService->copyFile($file, '/public/image/');
 
         $this->imageOptimizer->resize($file->getPathname());
         $this->dropBoxService->uploadFile($file->getFilename(), $file->getContent(), 'image');

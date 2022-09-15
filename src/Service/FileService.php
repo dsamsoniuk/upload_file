@@ -21,19 +21,17 @@ class FileService
      * 
      * @return File
      */
-    public function copyFile(string $path, string $destinyDir = '/') : File {
+    public function copyFile(File $file, string $destinyDir = '/') : File {
 
         $destinyPath    = $this->projectDir.$destinyDir;
-
-        $file           = new File($path);
         $ext            = $file->guessExtension();
 
         $bytes          = random_bytes(10);
         $fileName       = bin2hex($bytes).'.'.$ext;
-
+        
         $fs             = new Filesystem();
         $filePath       = $destinyPath.$fileName;
-        $fs->copy($path, $filePath);
+        $fs->copy($file->getPathname(), $filePath);
         
         return new File($filePath);
     }
