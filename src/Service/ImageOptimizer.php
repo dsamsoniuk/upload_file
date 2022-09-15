@@ -8,7 +8,10 @@ class ImageOptimizer
 {
     private const MAX_WIDTH = 150;
     private const MAX_HEIGHT = 150;
-
+    
+    /**
+     * @var Imagine $imagine
+     */
     private $imagine;
 
     public function __construct()
@@ -16,12 +19,19 @@ class ImageOptimizer
         $this->imagine = new Imagine();
     }
 
+    /**
+     * @param string $filename
+     * 
+     * @return void
+     */
     public function resize(string $filename): void
     {
         list($iwidth, $iheight) = getimagesize($filename);
-        $ratio = $iwidth / $iheight;
-        $width = self::MAX_WIDTH;
+
+        $ratio  = $iwidth / $iheight;
+        $width  = self::MAX_WIDTH;
         $height = self::MAX_HEIGHT;
+
         if ($width / $height > $ratio) {
             $width = $height * $ratio;
         } else {

@@ -4,27 +4,29 @@ namespace App\Service;
 use Spatie\Dropbox\Client;
 
 /**
- * drop box
+ * DropBox service
  * lib integration: https://github.com/spatie/dropbox-api
  */
-class DropBoxUploadService
+class DropBoxService
 {
     private const AUTH_TOKEN = 'sl.BPRAEDNxf88ucNkJ9YQewkP-ihMdp2VTZ4Twk6E3mYMXMKnsys0vZk4FCQpqDtRTnWu3qI6EksSrnJkxo4oM0IQlIk83lukdpQ0hFeJ-P59jcRLpgxadUpVtY84hh3mBVMq9R2r-gTA';
 
-    public function getAuth(){
+    /**
+     * @return Client
+     */
+    public function getClient() : Client {
         return new Client(self::AUTH_TOKEN);
     }
-
+    /**
+     * @param string $fileName
+     * @param mixed $content
+     * @param string $destinyDir
+     * 
+     * @return void
+     */
     public function uploadFile(string $fileName, $content, string $destinyDir = '/') : void {
-
-        $client = $this->getAuth();
-        $list =  $client->getAccountInfo();
-        $aa =1;
-        // $client->createFolder('image');
-        // $client->upload($destinyDir.'/aaa.jpg', 'image');
-
+        $client = $this->getClient();
         $client->upload($destinyDir.'/'.$fileName, $content);
-
     }
 
 }
