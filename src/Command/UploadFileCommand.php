@@ -64,8 +64,8 @@ class UploadFileCommand extends Command
         $optimalizer    = new ImageOptimizer();
         $optimalizer->resize($file->getPathname());
 
-        // $dropBox        = new DropBoxService();
-        // $dropBox->uploadFile($file->getFilename(), $file->getContent(), 'image');
+        $dropBox        = new DropBoxService();
+        $dropBox->uploadFile($file->getFilename(), $file->getContent(), 'image');
 
         $io->note(sprintf('Image uploaded successfully.' ));
 
