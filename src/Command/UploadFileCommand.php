@@ -2,16 +2,13 @@
 
 namespace App\Command;
 
-use App\Service\DropBoxService;
-use App\Service\FileService;
-use App\Service\ImageOptimizer;
+use App\Service\UploadService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpFoundation\File\File;
 
 #[AsCommand(
     name: 'app:upload-file',
@@ -19,30 +16,9 @@ use Symfony\Component\HttpFoundation\File\File;
 )]
 class UploadFileCommand extends Command
 {
-    /**
-     * @var FileService $fileService
-     */
-    private $fileService;
 
-    /**
-     * @var DropBoxService $dropBoxService
-     */
-    private $dropBoxService;
-
-    /**
-     * @var ImageOptimizer $imageOptimizer
-     */
-    private $imageOptimizer;
-
-    public function __construct(
-        FileService $fileService, 
-        DropBoxService $dropBoxService,
-        ImageOptimizer $imageOptimizer
-        )
+    public function __construct(private UploadService $uploadService, )
     {
-        $this->fileService = $fileService;
-        $this->dropBoxService = $dropBoxService;
-        $this->imageOptimizer = $imageOptimizer;
         parent::__construct();
     }
 
@@ -65,22 +41,7 @@ class UploadFileCommand extends Command
         $io     = new SymfonyStyle($input, $output);
         $path   = $input->getArgument('path');
 
-        if (!$path) {
-
-            $io->warning(sprintf('Add path file as first argument' ));
-            return Command::FAILURE;
-
-        } else if (!file_exists($path)) {
-
-            $io->warning(sprintf('File not exists.' ));
-            return Command::FAILURE;
-        }
-
-        $file = new File($path);
-        $file = $this->fileService->copyFile($file, '/public/image/');
-
-        $this->imageOptimizer->resize($file->getPathname());
-        $this->dropBoxService->uploadFile($file->getFilename(), $file->getContent(), 'image');
+        $this->uploadService->uploadImage($path);
 
         $io->note(sprintf('Image uploaded successfully.' ));
 
