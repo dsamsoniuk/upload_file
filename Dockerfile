@@ -10,15 +10,29 @@
 # remove image : docker image rm 6565767676
 # remove container : docker rm 77878787
 
+# remove all containers: docker container prune
+# remove all images none: docker image prune
+
 # stop container : docker stop  77878787
 
 # copy changes from container to localhost: docker cp 61ed611042fc:/app/. /var/www/upload_file/
 
+
+
 FROM php:8.1-fpm
 
-COPY . /app
+# RUN groupadd damian
 
-WORKDIR /app
+RUN useradd -ms /bin/bash damian
+USER damian
+
+COPY --chown=damian . /var/www/upload_file
+
+RUN chown -R damian:damian  /var/www/upload_file
+
+WORKDIR /var/www/upload_file
+
+
 
 
 # CMD php index.php
