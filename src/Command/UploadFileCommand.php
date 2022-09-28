@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\FileUpload\DropBox\DropBoxService;
 use App\Service\UploadService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,8 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class UploadFileCommand extends Command
 {
 
-    public function __construct(private UploadService $uploadService, )
-    {
+    public function __construct(
+        private UploadService $uploadService,
+        private DropBoxService $dropBoxService
+    ){
         parent::__construct();
     }
 
@@ -41,7 +44,9 @@ class UploadFileCommand extends Command
         $io     = new SymfonyStyle($input, $output);
         $path   = $input->getArgument('path');
 
-        $this->uploadService->uploadImage($path);
+        $this->uploadService->uploadImage($path, [
+            $this->dropBoxService
+        ], '/public/image');
 
         $io->note(sprintf('Image uploaded successfully.' ));
 

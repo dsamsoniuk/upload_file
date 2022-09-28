@@ -26,7 +26,7 @@ class ImageService
      * 
      * @return ImageDto
      */
-    public function resize(ImageDto $image, ?string $targetDir)
+    public function resize(ImageDto $image, ?string $targetDir) : ImageDto
     {
         $maxWith = self::MAX_WIDTH;
         $maxHeight = self::MAX_HEIGHT;

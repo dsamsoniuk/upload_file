@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class DropBoxService implements FileUploadInterface
 {
+
+    private string $path = '/';
     private ?Client $client;
     // private const AUTH_TOKEN = '';
     // = 'sl.BPRAEDNxf88ucNkJ9YQewkP-ihMdp2VTZ4Twk6E3mYMXMKnsys0vZk4FCQpqDtRTnWu3qI6EksSrnJkxo4oM0IQlIk83lukdpQ0hFeJ-P59jcRLpgxadUpVtY84hh3mBVMq9R2r-gTA';
@@ -20,15 +22,22 @@ class DropBoxService implements FileUploadInterface
     {
         $this->client = new Client($apiTokenDropBox);
     }
-
+    /**
+     * @param string $path
+     * 
+     * @return [void]
+     */
+    public function setPath(string $path) : void {
+        $this->path = $path;
+    }
     /**
      * @param File $file
      * @param string|null $target
      * 
      * @return [type]
      */
-    public function upload(File $file, ?string $target) {
-        $target = $target ? $target : '/'.$file->getFilename();
+    public function upload(File $file) {
+        $target = $this->path.$file->getFilename();
         // to do catch exceptions
         $this->client->upload($target, $file->getContent());
     }

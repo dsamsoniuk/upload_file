@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Dto\ImageDto;
 use App\Service\FileUpload\DropBox\DropBoxService;
+use App\Service\FileUpload\FileUploadInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -16,11 +17,23 @@ class UploadService
     public function __construct(private string $projectDir, private DropBoxService $dropBoxService){}
 
     /**
+     * @param FileUploadInterface $service
+     * @param File $file
+     * @param string $target
+     * 
+     * @return [type]
+     */
+    public function uploadService(FileUploadInterface $service, File $file){
+        $service->upload($file, '/');
+    }
+
+    /**
      * @param string $path
+     * @param array $services
      * 
      * @return void
      */
-    public function uploadImage(string $path) : void {
+    public function uploadImage(string $path, array $services = [], string $localPath = '/') : void {
 
         $image  = new ImageDto();
         $image->file = new File($path);
@@ -30,8 +43,11 @@ class UploadService
         }
 
         $imgService = new ImageService();
-        $image = $imgService->resize($image, $this->projectDir.'/public/image');
+        $image = $imgService->resize($image, $this->projectDir.$localPath);
 
-        $this->dropBoxService->upload($image->file, null);
+
+        foreach ($services as $service) {
+            $this->uploadService($service, $image->file);
+        }
     }
 }

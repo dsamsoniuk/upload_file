@@ -8,9 +8,9 @@ src/
         UploadFileCommand.php
             execute(path) :
                 try
-                    FileService->uploadImage(path)
+                    UploadService->uploadImage(path)
     Dto/
-        Image.php
+        ImageDto.php
             public file
 
     Service/
@@ -26,12 +26,13 @@ src/
             isImage(File file) : boolen
             resize(File file, size) : File
 
-        FileService.php
+        UploadService.php
         
             upload(UploadFileInterface uploadFile, File file) :
                 uploadFile->upload(file)
-            uploadImage(path, size = 'S') :
-                image = Image(path)
+            uploadImage(path) :
+                image = ImageDto()
+                image->file = new File(path)
                 
                 image = ImageService::resize(image->file, size)
 
