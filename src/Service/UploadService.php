@@ -6,6 +6,7 @@ use App\Service\FileUpload\DropBox\DropBoxService;
 use App\Service\FileUpload\FileUploadInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UploadService
 {
@@ -14,7 +15,7 @@ class UploadService
      * @param  projectDir
      * @param  DropBoxService $dropBoxService
      */
-    public function __construct(private string $projectDir, private DropBoxService $dropBoxService){}
+    public function __construct(private string $projectDir, private DropBoxService $dropBoxService, private ValidatorInterface $validator){}
 
     /**
      * @param FileUploadInterface $service

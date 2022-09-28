@@ -45,7 +45,7 @@ class UploadFileCommand extends Command
         $path   = $input->getArgument('path');
 
         $this->uploadService->uploadImage($path, [
-            $this->dropBoxService
+            // $this->dropBoxService
         ], '/public/image');
 
         $io->note(sprintf('Image uploaded successfully.' ));
