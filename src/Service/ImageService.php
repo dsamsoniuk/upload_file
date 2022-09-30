@@ -26,7 +26,7 @@ class ImageService
      * 
      * @return ImageDto
      */
-    public function resize(ImageDto $image, ?string $targetDir) : ImageDto
+    public function resize(ImageDto &$image, ?string $targetDir) : void
     {
         $maxWith = self::MAX_WIDTH;
         $maxHeight = self::MAX_HEIGHT;
@@ -50,10 +50,7 @@ class ImageService
             ->resize(new Box($maxWith, $maxHeight))
             ->save($target);
 
-        $newImage = new ImageDto();
-        $newImage->file = new File($target);
-
-        return $newImage;
+        $image->file = new File($target);
 
     }
 

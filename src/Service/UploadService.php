@@ -10,12 +10,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UploadService
 {
-
     /**
      * @param  projectDir
-     * @param  DropBoxService $dropBoxService
      */
-    public function __construct(private string $projectDir, private DropBoxService $dropBoxService, private ValidatorInterface $validator){}
+    public function __construct(private string $projectDir, private ValidatorInterface $validator){}
 
     /**
      * @param FileUploadInterface $service
@@ -25,7 +23,7 @@ class UploadService
      * @return [type]
      */
     public function uploadService(FileUploadInterface $service, File $file){
-        $service->upload($file, '/');
+        $service->upload($file);
     }
 
     /**
@@ -44,8 +42,7 @@ class UploadService
         }
 
         $imgService = new ImageService();
-        $image = $imgService->resize($image, $this->projectDir.$localPath);
-
+        $imgService->resize($image, $this->projectDir.$localPath);
 
         foreach ($services as $service) {
             $this->uploadService($service, $image->file);

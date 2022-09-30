@@ -20,3 +20,8 @@ php bin/console app:upload-file [path_file]
 php bin/console app:upload-file /home/damian/Pictures/green.jpg
 ```
 
+## Unit test
+
+```bash
+vendor/bin/phpunit
+```

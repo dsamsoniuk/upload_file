@@ -25,6 +25,9 @@ FROM php:8.1-fpm
 RUN apt-get -y update
 RUN apt-get -y install git
 
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
 RUN useradd -ms /bin/bash damian
 USER damian
 
