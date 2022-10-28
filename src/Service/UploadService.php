@@ -13,18 +13,9 @@ class UploadService
     /**
      * @param  projectDir
      */
-    public function __construct(private string $projectDir, private ValidatorInterface $validator){}
+    public function __construct(
+        private ValidatorInterface $validator){}
 
-    /**
-     * @param FileUploadInterface $service
-     * @param File $file
-     * @param string $target
-     * 
-     * @return [type]
-     */
-    public function uploadService(FileUploadInterface $service, File $file){
-        $service->upload($file);
-    }
 
     /**
      * @param string $path
@@ -32,20 +23,18 @@ class UploadService
      * 
      * @return void
      */
-    public function uploadImage(string $path, array $services = [], string $localPath = '/') : void {
-
-        $image  = new ImageDto();
-        $image->file = new File($path);
+    public function uploadImage(ImageDto $image, array $uploadServices = []) : bool {
 
         if (count($errors = $this->validator->validate($image))) {
             throw new FileException($errors);
         }
 
-        $imgService = new ImageService();
-        $imgService->resize($image, $this->projectDir.$localPath);
-
-        foreach ($services as $service) {
-            $this->uploadService($service, $image->file);
+        foreach ($uploadServices as $service) {
+            $service->addFile($image->getFile());
+            $service->upload();
         }
+
+        return true;
     }
+
 }

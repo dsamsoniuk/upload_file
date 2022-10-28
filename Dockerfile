@@ -28,6 +28,8 @@ RUN apt-get -y install git
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
+COPY Docker/dev/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 RUN useradd -ms /bin/bash damian
 USER damian
 

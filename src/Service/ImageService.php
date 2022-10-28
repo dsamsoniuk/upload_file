@@ -26,13 +26,13 @@ class ImageService
      * 
      * @return ImageDto
      */
-    public function resize(ImageDto &$image, ?string $targetDir) : void
+    public function resize(File $file, ?string $targetDir) : File
     {
         $maxWith = self::MAX_WIDTH;
         $maxHeight = self::MAX_HEIGHT;
 
-        $filePath = $image->file->getPathname();
-        $fileName = $image->file->getFilename();
+        $filePath = $file->getPathname();
+        $fileName = $file->getFilename();
 
         list($iwidth, $iheight) = getimagesize($filePath);
 
@@ -43,14 +43,14 @@ class ImageService
         } else {
             $maxHeight = $maxWith / $ratio;
         }
-        $target = $targetDir ? $targetDir.'/'.$fileName : $filePath;
+        $target = $targetDir ? $targetDir.$fileName : $filePath;
 
         $photo = $this->imagine->open($filePath);
         $photo
             ->resize(new Box($maxWith, $maxHeight))
             ->save($target);
 
-        $image->file = new File($target);
+        return new File($target);
 
     }
 
