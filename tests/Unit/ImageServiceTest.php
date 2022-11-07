@@ -29,13 +29,13 @@ class ImageServiceTest extends TestCase
     {
         $this->calculator = new CalculatorService();
 
-        $this->uploadServiceMock = $this->getMockBuilder(UploadService::class)->disableOriginalConstructor()->getMock();
-        $this->dropBoxServiceMock = $this->getMockBuilder(DropBoxService::class)->disableOriginalConstructor()->getMock();
+        // $this->uploadServiceMock = $this->getMockBuilder(UploadService::class)->disableOriginalConstructor()->getMock();
+        // $this->dropBoxServiceMock = $this->getMockBuilder(DropBoxService::class)->disableOriginalConstructor()->getMock();
 
-        $application = new Application();
-        $application->add(new UploadFileCommand($this->uploadServiceMock, $this->dropBoxServiceMock));
-        $command = $application->find('app:upload-file');
-        $this->commandTester = new CommandTester($command);
+        // $application = new Application();
+        // $application->add(new UploadFileCommand($this->uploadServiceMock, $this->dropBoxServiceMock));
+        // $command = $application->find('app:upload-file');
+        // $this->commandTester = new CommandTester($command);
 
     }
     // public function testExecute(){
@@ -43,8 +43,6 @@ class ImageServiceTest extends TestCase
     //     $this->commandTester->execute([]);
 
     // }
-
-
 
     /** @test */
     public function upload_file_exceptions(): void
@@ -64,6 +62,7 @@ class ImageServiceTest extends TestCase
     /** @dataProvider dataCalcProvider */
     public function testData($a,$b,$expected){
         $res = $this->calculator->add($a,$b);
+        $a = 1;
         $this->assertEquals($expected, $res);
     }
 

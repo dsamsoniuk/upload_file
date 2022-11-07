@@ -21,7 +21,7 @@ class DropBoxService implements FileUploadInterface
     // = 'sl.BPRAEDNxf88ucNkJ9YQewkP-ihMdp2VTZ4Twk6E3mYMXMKnsys0vZk4FCQpqDtRTnWu3qI6EksSrnJkxo4oM0IQlIk83lukdpQ0hFeJ-P59jcRLpgxadUpVtY84hh3mBVMq9R2r-gTA';
 
     public function __construct(
-        private string $apiTokenDropBox, 
+        private string $apiTokenDropBox = '', 
         private string $path = '/'
         )
     {

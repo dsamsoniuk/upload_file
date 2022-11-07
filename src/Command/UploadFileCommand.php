@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -35,6 +36,8 @@ class UploadFileCommand extends Command
     protected function configure(): void
     {
         $this->addArgument('path', InputArgument::OPTIONAL, 'path file');
+        // $this->addOption('path', null, InputOption::VALUE_OPTIONAL, 'Limits the number of users listed', 50);
+
     }
 
     /**

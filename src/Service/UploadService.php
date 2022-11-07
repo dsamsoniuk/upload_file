@@ -16,7 +16,16 @@ class UploadService
     public function __construct(
         private ValidatorInterface $validator){}
 
-
+    /**
+     * @param FileUploadInterface $service
+     * @param File $file
+     * 
+     * @return [type]
+     */
+    private function upload(FileUploadInterface $service, File $file){
+        $service->addFile($file);
+        $service->upload();
+    }
     /**
      * @param string $path
      * @param array $services
@@ -30,8 +39,7 @@ class UploadService
         }
 
         foreach ($uploadServices as $service) {
-            $service->addFile($image->getFile());
-            $service->upload();
+            $this->upload($service, $image->getFile());
         }
 
         return true;

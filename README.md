@@ -25,3 +25,6 @@ php bin/console app:upload-file /home/damian/Pictures/green.jpg
 ```bash
 vendor/bin/phpunit
 ```
+
+
+
